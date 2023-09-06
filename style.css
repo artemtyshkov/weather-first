@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;800&display=swap');
+
+:root {
+    --border-clr: rgb(214, 214, 214);
+}
+
+*,
+*::before,
+*::after{box-sizing:border-box;}
+
+body {
+    display: grid;
+    margin: 0;
+    place-items: center;
+    min-height: 100vh;
+    height: 1px;
+    font-family: 'Poppins', sans-serif;
+    background-color: rgb(221, 197, 219);
+}
+
+#main {
+    width: 320px;
+    height: 100vh;
+    padding: 5px;
+}
+
+.main-top {
+    padding-top: 4rem;
+    text-align: center;
+    height: 60%;
+    background-image: url(img/sunny.avif);
+    /* filter:b(10%); */
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.main-down {
+    position: relative;
+    text-align: center;
+    height: 40%;
+    background-color: #fff;
+}
+
+h2 {
+    font-size: 1rem;
+    font-weight: 400;
+    /* color: rgb(70, 70, 70); */
+}
+
+h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.main-temp {
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 15px 0 15px 0;
+}
+
+#search {
+    margin: 0 auto;
+    outline: none;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    /* background-color:transparent; */
+}
+
+.nav {
+    display: flex;
+    /* height: 25%; */
+    width: 100%;
+}
+
+.nav a{
+    padding: 1rem;
+    text-decoration: none;
+    color: black;
+}
+
+.weather,
+.news,
+.photos {
+    position: relative;
+    padding-bottom: 1rem;
+    cursor: pointer;
+    opacity: 0.3;
+    overflow: hidden;
+}
+
+.weather:hover,
+.news:hover,
+.photos:hover {
+    border-bottom: 1px solid var(--border-clr);
+    text-shadow: 0px 0px 1px rgb(70, 70, 70);
+    opacity: 1;
+}
+
+.weather:active,
+.news:active,
+.photos:active {
+    border-bottom: 1px solid var(--border-clr);
+    opacity: 1;
+}
+
+.weather-data-container {
+    display: grid;
+    grid-template-rows: repeat(5, 1fr);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: calc(100% - 25%);
+    width: calc(100%);
+}
+
+.weather-data-container div {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 1.5rem;
+    align-items: center;
+    font-size: 1rem;
+    letter-spacing: normal;
+    color:rgb(70, 70, 70);
+}
+
+.weather-data-container div span {
+    padding: 0 5px;
+}
+
+.weather-data-container div:not(:last-child) {
+    border-bottom: 1px solid var(--border-clr);
+}
