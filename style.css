@@ -28,7 +28,7 @@ body {
     padding-top: 4rem;
     text-align: center;
     height: 60%;
-    background-image: url(img/sunny.avif);
+    background-image: url(img/snow.avif);
     /* filter:b(10%); */
     background-size: cover;
     background-repeat: no-repeat;
@@ -47,7 +47,7 @@ h2 {
     /* color: rgb(70, 70, 70); */
 }
 
-h3 {
+.main-weather {
     font-size: 1.2rem;
     margin-bottom: 0.5rem;
 }
