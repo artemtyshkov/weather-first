@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Weather, news and photos</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="responsive.css">
+    <link rel="shortcut icon" href="#">
 </head>
 <body>
     <main id="main">
@@ -15,12 +16,16 @@
             <input type="text" id="search" placeholder="Choose the location">
             <h2 class="city"></h2>
         </div>
-        <div class="main-down">
+        <div class="main-bottom">
             <div class="nav">
 
-                <a href="#" class="option-weather"></a>
-                <p class="weather">Weather</p>
-                <div class="weather-data-container">
+                <a href="#" class="option-weather">
+                    <p class="weather active-btn">Weather</p>
+                </a>
+                
+                <div class="loader"></div>
+                
+                <div class="weather-data-container hide">
                     <div class="temp-feels-like">
                         <span class="weather-data-text">Feels Like</span>
                         <span class="feels-like-value"></span>
@@ -39,20 +44,26 @@
                     </div>
                     <div class="wind">
                         <span class="weather-data-text">Wind</span>
-                        <span class="wind-value"></span>
+                        <div class="wind-table">
+                            <i class="fa-solid fa-arrow-up"></i>                            
+                            <span class="wind-value"></span>
+                        </div>
                     </div>
-                    <!-- <div class="temp-feels-like"></div> -->
                 </div>
 
-                <a href="#" class="option-news"></a>
-                <p class="news">News</p>
-                <div class="news-data">
+                <a href="#" class="option-news">
+                    <p class="news">News</p>
+                </a>
+                
+                <div class="news-data-container">
                     
                 </div>
 
-                <a href="#" class="option-photos"></a>
-                <p class="photos">Photos</p>
-                <div class="photos-data">
+                <a href="#" class="option-photos">
+                    <p class="photos">Photos</p>
+                </a>
+                
+                <div class="photos-data-container">
                     
                 </div>
 
@@ -61,5 +72,6 @@
     </main>
     
     <script src="script.js"></script>
+    <script src="https://kit.fontawesome.com/d2f9b4a773.js" crossorigin="anonymous"></script>
 </body>
 </html>
