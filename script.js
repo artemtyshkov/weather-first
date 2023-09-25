@@ -4,7 +4,8 @@ const urlWeather1 = (enteredLocation) => `https://api.openweathermap.org/data/2.
 const keyNews2 = '4c6ea768d9074c66b72d7a6b270a1ac0';
 const urlNews2 = (enteredLocation) => `https://newsapi.org/v2/everything?q=${enteredLocation}&sortBy=popularity&apiKey=${keyNews2}`;
 
-// const keyPhotos3 = '';
+const keyPhotos3 = 'nTCkY5XRA7Sqw-zm7gU74m90b3kbqy8cOVEcZowcZxg';
+const urlPhotos3 = (enteredLocation) => `https://api.unsplash.com/search/photos?query=${enteredLocation}&client_id=${keyPhotos3}`
 
 const input = document.getElementById('search');
 const city = document.querySelector('.city');
@@ -23,9 +24,11 @@ async function getResponses(location) {
 
     const respWeather = await fetch(urlWeather1(location));
     const respNews = await fetch(urlNews2(location));
+    const respPhotos = await fetch(urlPhotos3(location));
 
     const dataWeather = await respWeather.json();
     const dataNews = await respNews.json();
+    const dataPhotos = await respPhotos.json();
 
     if (document.querySelector('.option-weather').classList.contains('active-btn')){
         document.querySelector('.weather-data-container').classList.remove('hide');
@@ -37,7 +40,7 @@ async function getResponses(location) {
 
     document.querySelector('.loader').style.display = 'none';
 
-    console.log(dataNews);
+    console.log(dataPhotos);
 
     //getting values for weather
     document.querySelector('.main-weather').textContent = dataWeather.weather[0].main;
@@ -51,8 +54,11 @@ async function getResponses(location) {
     document.querySelector('.fa-arrow-up').style.setProperty('transform', `rotate(${dataWeather.wind.deg}deg)`);
 
     //getting values for news
-
     getDataNews(dataNews);
+
+    //getting values for photos
+    getDataPhotos(dataPhotos);
+
 }
 
 // ________________________________________________________________________________________________________________________
@@ -68,6 +74,8 @@ function selectCity() {
             city.innerHTML = `
                 ${input.value}<i class="fa-solid fa-xmark"></i>
             `;
+            document.querySelector('.photos-data-container').innerHTML = '';
+            document.querySelector('.news-data-container').innerHTML = '';
             getResponses(`${input.value}`);
             input.value = '';
             input.style.display = 'none';
@@ -107,7 +115,6 @@ btnNews.addEventListener('click', () =>{
         document.querySelector('.weather-data-container').classList.add('hide');
         document.querySelector('.news-data-container').classList.remove('hide');
         document.querySelector('.photos-data-container').classList.add('hide');
-
         document.querySelector('.main-bottom').classList.add('data-container-active');
         document.querySelector('.main-top').classList.add('data-container-unactive');
     }
@@ -124,6 +131,8 @@ btnPhotos.addEventListener('click', () =>{
         document.querySelector('.weather-data-container').classList.add('hide');
         document.querySelector('.news-data-container').classList.add('hide');
         document.querySelector('.photos-data-container').classList.remove('hide');
+        document.querySelector('.main-bottom').classList.add('data-container-active');
+        document.querySelector('.main-top').classList.add('data-container-unactive');
     }
 
     btnNews.classList.remove('active-btn');
@@ -165,5 +174,23 @@ function getDataNews(dataNews) {
         document.querySelector('.news-data-container').appendChild(div);
         div.appendChild(img);
         div.appendChild(p);
+    }
+}
+
+//for photos data
+
+function getDataPhotos(dataPhotos) {
+    for (let i = 0; i <= 27; i++) {
+        const div = document.createElement('div');
+        const img = document.createElement('img');
+    
+        div.classList.add('image-content');
+    
+        img.setAttribute('src', `${dataPhotos.results[i]['urls'].small}`);
+
+        document.querySelector('.photos-data-container').appendChild(div);
+        div.appendChild(img);
+        // document.querySelector('.photos-data-container').appendChild(div);
+        // div.appendChild(img);
     }
 }
