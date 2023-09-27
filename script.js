@@ -14,7 +14,7 @@ const keyNews2 = '4c6ea768d9074c66b72d7a6b270a1ac0';
 const urlNews2 = (enteredLocation) => `https://newsapi.org/v2/everything?q=${enteredLocation}&sortBy=popularity&apiKey=${keyNews2}`;
 
 const keyPhotos3 = 'nTCkY5XRA7Sqw-zm7gU74m90b3kbqy8cOVEcZowcZxg';
-const urlPhotos3 = (enteredLocation) => `https://api.unsplash.com/search/photos?query=${enteredLocation}&client_id=${keyPhotos3}`
+const urlPhotos3 = (enteredLocation) => `https://api.unsplash.com/search/photos?per_page=50&query=${enteredLocation}&client_id=${keyPhotos3}`
 
 const input = document.getElementById('search');
 const city = document.querySelector('.city');
@@ -47,7 +47,7 @@ async function getResponses(location) {
 
     document.querySelector('.loader').style.display = 'none';
 
-    console.log(dataNews, dataPhotos);
+    console.log(dataWeather, dataNews, dataPhotos);
 
     //getting values for weather
 
@@ -78,18 +78,20 @@ function getFloorValueOfWeather(weatherValue) {
 
 function selectCity() {
     input.addEventListener('keyup', (e) => {
-        if (e.code === 'Enter') {
-            city.textContent = input.value;
-            city.innerHTML = `
-                ${input.value}<i class="fa-solid fa-xmark"></i>
-            `;
+        e.preventDefault();
+        if (e.key === 'Enter') {
+            // city.textContent = input.value;
+            // const inputValue = input.value.split('')[0].toUpperCase().join('');
+            const inputValue = input.value.trim().charAt(0).toUpperCase() + input.value.trim().slice(1);
+            input.value = inputValue;
+            city.innerHTML = `${input.value}<i class="fa-solid fa-xmark"></i>`;
             document.querySelector('.main-top').style.height = '';
             document.querySelector('.main-top').classList.add('height-60');
             document.querySelector('#search').style.cssText = '';
 
             document.querySelector('.photos-data-container').innerHTML = '';
             document.querySelector('.news-data-container').innerHTML = '';
-            getResponses(`${input.value}`);
+            getResponses(`${inputValue}`);
             input.value = '';
             input.style.display = 'none';
             input.blur();
@@ -213,7 +215,7 @@ function getDataWeather(dataWeather) {
 // for news data
 
 function getDataNews(dataNews) {
-    for (let i = 0; i <= 10; i++) {
+    for (let i = 0; i <= 20; i++) {
         const div = document.createElement('div');
         const img = document.createElement('img');
         const p = document.createElement('p');
@@ -238,7 +240,8 @@ function getDataNews(dataNews) {
         div.appendChild(p);
         div.addEventListener('click', (e) => {
             // const target = e.target;
-            window.location.href = `${dataNews.articles[i].url}`;
+            // window.location.href = `${dataNews.articles[i].url}`;
+            window.open(`${dataNews.articles[i].url}`, '_blank'); ;
         }, false);
     }
 }
