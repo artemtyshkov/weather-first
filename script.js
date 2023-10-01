@@ -9,10 +9,8 @@ window.onload = function() {
 
 const keyWeather1 = '6e07f1b9464466e8886c4a31d35c862a';
 const urlWeather1 = (enteredLocation) => `https://api.openweathermap.org/data/2.5/weather?q=${enteredLocation}&appid=${keyWeather1}`;
-
 const keyNews2 = '4c6ea768d9074c66b72d7a6b270a1ac0';
 const urlNews2 = (enteredLocation) => `https://newsapi.org/v2/everything?q=${enteredLocation}&sortBy=popularity&apiKey=${keyNews2}`;
-
 const keyPhotos3 = 'nTCkY5XRA7Sqw-zm7gU74m90b3kbqy8cOVEcZowcZxg';
 const urlPhotos3 = (enteredLocation) => `https://api.unsplash.com/search/photos?per_page=50&query=${enteredLocation}&client_id=${keyPhotos3}`
 
@@ -47,7 +45,7 @@ async function getResponses(location) {
 
     document.querySelector('.loader').style.display = 'none';
 
-    console.log(dataWeather, dataNews, dataPhotos);
+    // console.log(dataWeather, dataNews, dataPhotos);
 
     //getting values for weather
 
@@ -106,63 +104,77 @@ const btnNews = document.querySelector('.option-news');
 const btnPhotos = document.querySelector('.option-photos');
 
 btnWeather.addEventListener('click', () => {
-    if (btnWeather.classList.contains('active-btn')) {
-        return;
-    } else {
-        btnWeather.classList.toggle('active-btn');
-        document.querySelector('.weather-data-container').classList.remove('hide');
-        document.querySelector('.news-data-wrapper').classList.add('hide');
-        document.querySelector('.photos-data-wrapper').classList.add('hide');
+    if (btnWeather.classList.contains('active-btn')) return;
 
-        document.querySelector('.main-bottom').classList.remove('data-container-active');
-        document.querySelector('.main-top').classList.remove('data-container-unactive');
-        elemsToHide('mainVisible');
+    btnWeather.classList.toggle('active-btn');
 
-    }
+    // new
+        document.querySelector('.main-bottom').style.height = '0';
+        document.querySelector('.main-top').style.height = '100%';
+        const timeOut = setTimeout(() => {
+            document.querySelector('.main-bottom').style.height = '40%';
+            document.querySelector('.main-top').style.height = '60%';
+            document.querySelector('.weather-data-container').classList.remove('hide');
+        }, 500);
+
+
+    document.querySelector('.news-data-wrapper').classList.add('hide');
+    document.querySelector('.photos-data-wrapper').classList.add('hide');
+    // document.querySelector('.weather-data-container').classList.remove('hide');
+
+
+
+    document.querySelector('.main-bottom').classList.remove('data-container-active');
+    document.querySelector('.main-top').classList.remove('data-container-unactive');
+    elemsToHide('mainVisible');
 
     btnNews.classList.remove('active-btn');
     btnPhotos.classList.remove('active-btn');
 });
 
 btnNews.addEventListener('click', () =>{
-    if (btnNews.classList.contains('active-btn')) {
-        return;
-    } else {
-        btnNews.classList.toggle('active-btn');
-        document.querySelector('.weather-data-container').classList.add('hide');
-        document.querySelector('.news-data-wrapper').classList.remove('hide');
-        document.querySelector('.photos-data-wrapper').classList.add('hide');
-        document.querySelector('.main-bottom').classList.add('data-container-active');
-        document.querySelector('.main-top').classList.add('data-container-unactive');
-        
-        
-        elemsToHide('mainHidden');
-    }
-    btnWeather.classList.remove('active-btn');
-    btnPhotos.classList.remove('active-btn');
-});
+    if (btnNews.classList.contains('active-btn')) return;
 
+    btnNews.classList.toggle('active-btn');
+    document.querySelector('.main-bottom').style.height = '';
+    document.querySelector('.main-top').style.height = '';
+    document.querySelector('.weather-data-container').classList.add('hide');
+    document.querySelector('.news-data-wrapper').classList.remove('hide');
+    document.querySelector('.photos-data-wrapper').classList.add('hide');
+    document.querySelector('.main-bottom').classList.add('data-container-active');
+    document.querySelector('.main-top').classList.add('data-container-unactive');
+    
+    // document.querySelector('.news-data-container').addEventListener('scroll', elem => {
+        //     // const coords = elem.getBoundingClientRect();
+        //     setInterval(()=> {
+            //         console.log(document.querySelector('.news-data-container').getBoundingClientRect());
+            //         console.log(document.querySelector('.news-data-container').scrollY);
+            //     }, 1000);
+            // });
+            
+            elemsToHide('mainHidden');
+            
+            btnWeather.classList.remove('active-btn');
+            btnPhotos.classList.remove('active-btn');
+        });
+        
 btnPhotos.addEventListener('click', () =>{
-    if (btnPhotos.classList.contains('active-btn')) {
-        return;
-    } else {
-        btnPhotos.classList.toggle('active-btn');
-        document.querySelector('.weather-data-container').classList.add('hide');
-        document.querySelector('.news-data-wrapper').classList.add('hide');
-        document.querySelector('.photos-data-wrapper').classList.remove('hide');
-        document.querySelector('.main-bottom').classList.add('data-container-active');
-        document.querySelector('.main-top').classList.add('data-container-unactive');
+    if (btnPhotos.classList.contains('active-btn')) return;
+        
+    document.querySelector('.main-bottom').style.height = '';
+    document.querySelector('.main-top').style.height = '';
+    btnPhotos.classList.toggle('active-btn');
+    document.querySelector('.weather-data-container').classList.add('hide');
+    document.querySelector('.news-data-wrapper').classList.add('hide');
+    document.querySelector('.photos-data-wrapper').classList.remove('hide');
+    document.querySelector('.main-bottom').classList.add('data-container-active');
+    document.querySelector('.main-top').classList.add('data-container-unactive');
 
-        function mainData() {
-            // document.querySelector('.main-temp').classList.remove('main-temp');
-            document.querySelector('.main-temp').classList.add('secondary-temp');
-            // document.querySelector('.main-weather')
-            // main-temp
-            // main-weather
-        }
-        mainData();
-        elemsToHide('mainHidden');
+    function mainData() {
+        document.querySelector('.main-temp').classList.add('secondary-temp');
     }
+    mainData();
+    elemsToHide('mainHidden');
 
     btnNews.classList.remove('active-btn');
     btnWeather.classList.remove('active-btn');
@@ -202,9 +214,9 @@ function getDataWeather(dataWeather) {
         </div>
         <div class="wind">
             <span class="weather-data-text">Wind</span>
-            <div class="wind-table">${(dataWeather.wind.speed).toFixed(1)} mph
+            <div class="wind-table">
                 <i class="fa-solid fa-arrow-up"></i>                            
-                <span class="wind-value"></span>
+                <span class="wind-value">${(dataWeather.wind.speed).toFixed(1)} mph</span>
             </div>
         </div>
     `;
@@ -276,3 +288,10 @@ function elemsToHide(elem) {
         document.querySelector('.city').style.visibility = 'visible';
     }
 }
+
+const mainBottom = document.querySelector('.main-bottom');
+
+// document.querySelector('.data-container-active').addEventListener('scroll', elem => {
+//     const coords = elem.getBoundingClientRect();
+//     setInterval(() => console.log(coords), 5000);
+// });
