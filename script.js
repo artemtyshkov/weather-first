@@ -163,6 +163,7 @@ btnPhotos.addEventListener('click', () =>{
         
     document.querySelector('.main-bottom').style.height = '';
     document.querySelector('.main-top').style.height = '';
+
     btnPhotos.classList.toggle('active-btn');
     document.querySelector('.weather-data-container').classList.add('hide');
     document.querySelector('.news-data-wrapper').classList.add('hide');
