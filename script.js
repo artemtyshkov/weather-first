@@ -1,6 +1,12 @@
 window.onload = function() {
+    const currentTime = new Date();
+    if(currentTime.getHours() > 6 && currentTime.getHours() < 17) {
+        document.getElementById('main').style.backgroundImage = 'url(img/afternoon.png)';
+    } else {
+        document.getElementById('main').style.backgroundImage = 'url(img/night.png)';
+    }
     input.focus();
-    document.querySelector('.main-top').style.height = '100%';
+    document.querySelector('.main-top').style.height = '100%'; //need to check heightx
     document.querySelector('#search').style.cssText = `
         position: relative;
         top: 35%;
@@ -61,10 +67,10 @@ async function getResponses(location) {
     // document.querySelector('.fa-arrow-up').style.setProperty('transform', `rotate(${dataWeather.wind.deg}deg)`);
 
     //getting values for news
-    getDataNews(dataNews);
-
+    
     //getting values for photos
     getDataPhotos(dataPhotos);
+    getDataNews(dataNews);
 
 }
 
@@ -78,8 +84,6 @@ function selectCity() {
     input.addEventListener('keyup', (e) => {
         e.preventDefault();
         if (e.key === 'Enter') {
-            // city.textContent = input.value;
-            // const inputValue = input.value.split('')[0].toUpperCase().join('');
             const inputValue = input.value.trim().charAt(0).toUpperCase() + input.value.trim().slice(1);
             input.value = inputValue;
             city.innerHTML = `${input.value}<i class="fa-solid fa-xmark"></i>`;
@@ -102,13 +106,16 @@ const nav = document.querySelector('.nav');
 const btnWeather = document.querySelector('.option-weather');
 const btnNews = document.querySelector('.option-news');
 const btnPhotos = document.querySelector('.option-photos');
-
+//
+function f() {
+    
+}
+//
 btnWeather.addEventListener('click', () => {
     if (btnWeather.classList.contains('active-btn')) return;
 
     btnWeather.classList.toggle('active-btn');
 
-    // new
         document.querySelector('.main-bottom').style.height = '0';
         document.querySelector('.main-top').style.height = '100%';
         const timeOut = setTimeout(() => {
@@ -117,12 +124,8 @@ btnWeather.addEventListener('click', () => {
             document.querySelector('.weather-data-container').classList.remove('hide');
         }, 500);
 
-
     document.querySelector('.news-data-wrapper').classList.add('hide');
     document.querySelector('.photos-data-wrapper').classList.add('hide');
-    // document.querySelector('.weather-data-container').classList.remove('hide');
-
-
 
     document.querySelector('.main-bottom').classList.remove('data-container-active');
     document.querySelector('.main-top').classList.remove('data-container-unactive');
@@ -132,7 +135,7 @@ btnWeather.addEventListener('click', () => {
     btnPhotos.classList.remove('active-btn');
 });
 
-btnNews.addEventListener('click', () =>{
+btnNews.addEventListener('click', () => {
     if (btnNews.classList.contains('active-btn')) return;
 
     btnNews.classList.toggle('active-btn');
@@ -143,22 +146,14 @@ btnNews.addEventListener('click', () =>{
     document.querySelector('.photos-data-wrapper').classList.add('hide');
     document.querySelector('.main-bottom').classList.add('data-container-active');
     document.querySelector('.main-top').classList.add('data-container-unactive');
+            
+    elemsToHide('mainHidden');
     
-    // document.querySelector('.news-data-container').addEventListener('scroll', elem => {
-        //     // const coords = elem.getBoundingClientRect();
-        //     setInterval(()=> {
-            //         console.log(document.querySelector('.news-data-container').getBoundingClientRect());
-            //         console.log(document.querySelector('.news-data-container').scrollY);
-            //     }, 1000);
-            // });
-            
-            elemsToHide('mainHidden');
-            
-            btnWeather.classList.remove('active-btn');
-            btnPhotos.classList.remove('active-btn');
-        });
+    btnWeather.classList.remove('active-btn');
+    btnPhotos.classList.remove('active-btn');
+});
         
-btnPhotos.addEventListener('click', () =>{
+btnPhotos.addEventListener('click', () => {
     if (btnPhotos.classList.contains('active-btn')) return;
         
     document.querySelector('.main-bottom').style.height = '';
@@ -251,8 +246,7 @@ function getDataNews(dataNews) {
         document.querySelector('.news-data-container').appendChild(div);
         div.appendChild(img);
         div.appendChild(p);
-        div.addEventListener('click', (e) => {
-            // const target = e.target;
+        div.addEventListener('click', () => {
             // window.location.href = `${dataNews.articles[i].url}`;
             window.open(`${dataNews.articles[i].url}`, '_blank'); ;
         }, false);
@@ -290,9 +284,43 @@ function elemsToHide(elem) {
     }
 }
 
-const mainBottom = document.querySelector('.main-bottom');
+// 
 
-// document.querySelector('.data-container-active').addEventListener('scroll', elem => {
-//     const coords = elem.getBoundingClientRect();
-//     setInterval(() => console.log(coords), 5000);
-// });
+const swipeYLimit = 220;
+
+document.querySelector('.main-bottom').addEventListener('touchstart', e => {
+    if (e.target == document.querySelector('a')) {return;}
+    const { touches } = e;
+    if (touches && touches.length === 1) {
+        const touch = touches[0];
+        startY = touch.clientY;
+        document.querySelector('.main-bottom').addEventListener('touchmove', moveTouch);
+        document.querySelector('.main-bottom').addEventListener('touchend', endTouch);
+        console.log(e);
+    }
+});
+
+const moveTouch = e => {
+    const progressY = startY - e.touches[0].clientY;
+    const translation = progressY > 0 ? -Math.abs(progressY) : Math.abs(progressY);
+    if (translation < 0) {
+        return;
+    } else {
+        document.querySelector('.main-bottom').style.setProperty('transform', `translateY(${translation}px)`);
+    }
+};
+
+const endTouch = e => {
+    const finishingTouch = e.changedTouches[0].clientY;
+    if (startY < finishingTouch - swipeYLimit) {
+        document.querySelector('.main-bottom').classList.toggle('hide');
+    } else if (startY > finishingTouch + swipeYLimit){
+        progressY = 0; 
+    }
+    document.querySelector('.main-bottom').removeEventListener('touchmove', moveTouch);
+    document.querySelector('.main-bottom').removeEventListener('touchend', endTouch);
+};
+
+document.documentElement.addEventListener('click', e  => {
+    console.log(e);
+});
