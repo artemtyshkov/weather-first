@@ -10,57 +10,37 @@
   </head>
   <body>
     <main id="main">
-      <div class="main-top">
-        <h3 class="main-weather"></h3>
-        <p class="main-temp"></p>
-        <input
+      <input
           type="text"
           id="search"
           autocorrect="on"
           autocapitalize="words"
           placeholder="Choose the location"
         />
-        <h2 class="city"></h2>
+      <div class="main-top hide">
+        <div class="main-top-container">
+          <h3 class="main-weather"></h3>
+          <p class="main-temp"></p>
+          <h2 class="city"></h2>
+        </div>
       </div>
-      <div class="main-bottom">
-        <div class="nav">
+      <div class="main-bottom hide">
+        <div class="tabs">
           <a href="#" class="option-weather active-btn">Weather</a>
+          <a href="#" class="option-news">News</a>
+          <a href="#" class="option-photos">Photos</a>
+        </div>
 
-          <div class="loader"></div>
-          <div class="clearfix"></div>
+        <div class="loader"></div>
 
+        <div class="tab-content-wrapper">
           <section class="weather-data-container hide">
-            <!-- <div class="temp-feels-like">
-                        <span class="weather-data-text">Feels Like</span>
-                        <span class="feels-like-value"></span>
-                    </div>
-                    <div class="temp-minmax">
-                        <span class="weather-data-text">Min/max</span>
-                        <span class="temp-minmax-value"></span>
-                    </div>
-                    <div class="pressure">
-                        <span class="weather-data-text">Pressure</span>
-                        <span class="pressure-value"></span>
-                    </div>
-                    <div class="humidity">
-                        <span class="weather-data-text">Humidity</span>
-                        <span class="humidity-value"></span>
-                    </div>
-                    <div class="wind">
-                        <span class="weather-data-text">Wind</span>
-                        <div class="wind-table">
-                            <i class="fa-solid fa-arrow-up"></i>                            
-                            <span class="wind-value"></span>
-                        </div>
-                    </div> -->
           </section>
 
-          <a href="#" class="option-news">News</a>
           <section class="news-data-wrapper hide">
             <div class="news-data-container"></div>
           </section>
 
-          <a href="#" class="option-photos">Photos</a>
           <section class="photos-data-wrapper hide">
             <div class="photos-data-container"></div>
           </section>
