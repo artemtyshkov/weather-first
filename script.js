@@ -1,17 +1,12 @@
-window.onload = function() {
+window.addEventListener('DOMContentLoaded', () => {
+    input.focus();
     const currentTime = new Date();
     if(currentTime.getHours() > 6 && currentTime.getHours() < 17) {
         document.getElementById('main').style.backgroundImage = 'url(img/afternoon.png)';
     } else {
         document.getElementById('main').style.backgroundImage = 'url(img/night.png)';
     }
-    input.focus();
-    document.querySelector('.main-top').style.height = '100%'; //need to check heightx
-    document.querySelector('#search').style.cssText = `
-        position: relative;
-        top: 35%;
-    `;
-}
+});
 
 const keyWeather1 = '6e07f1b9464466e8886c4a31d35c862a';
 const urlWeather1 = (enteredLocation) => `https://api.openweathermap.org/data/2.5/weather?q=${enteredLocation}&appid=${keyWeather1}`;
@@ -53,22 +48,7 @@ async function getResponses(location) {
 
     // console.log(dataWeather, dataNews, dataPhotos);
 
-    //getting values for weather
-
     getDataWeather(dataWeather);
-    // document.querySelector('.main-weather').textContent = dataWeather.weather[0].main;
-    // document.querySelector('.main-temp').textContent = getDataWeather(dataWeather.main.temp);
-    // document.querySelector('.feels-like-value').textContent = getDataWeather(dataWeather.main.feels_like);
-    // document.querySelector('.feels-like-value').textContent = getDataWeather(dataWeather.main.feels_like);
-    // document.querySelector('.temp-minmax-value').textContent = getDataWeather(dataWeather.main.temp_min) + '/' + getDataWeather(dataWeather.main.temp_max);
-    // document.querySelector('.pressure-value').textContent = `${dataWeather.main.pressure} in`;
-    // document.querySelector('.humidity-value').textContent = `${dataWeather.main.humidity}%`;
-    // document.querySelector('.wind-value').textContent = `${(dataWeather.wind.speed).toFixed(1)} mph`;
-    // document.querySelector('.fa-arrow-up').style.setProperty('transform', `rotate(${dataWeather.wind.deg}deg)`);
-
-    //getting values for news
-    
-    //getting values for photos
     getDataPhotos(dataPhotos);
     getDataNews(dataNews);
 
@@ -87,8 +67,9 @@ function selectCity() {
             const inputValue = input.value.trim().charAt(0).toUpperCase() + input.value.trim().slice(1);
             input.value = inputValue;
             city.innerHTML = `${input.value}<i class="fa-solid fa-xmark"></i>`;
-            document.querySelector('.main-top').style.height = '';
-            document.querySelector('.main-top').classList.add('height-60');
+            document.querySelector('.main-bottom').classList.add('bottom-opened');
+            document.querySelector('.main-top').classList.remove('hide');
+            document.querySelector('.main-bottom').classList.remove('hide');
             document.querySelector('#search').style.cssText = '';
 
             document.querySelector('.photos-data-container').innerHTML = '';
@@ -102,28 +83,23 @@ function selectCity() {
 }
 selectCity();
 
-const nav = document.querySelector('.nav');
+const tabs = document.querySelector('.tabs');
 const btnWeather = document.querySelector('.option-weather');
 const btnNews = document.querySelector('.option-news');
 const btnPhotos = document.querySelector('.option-photos');
-//
-function f() {
-    
-}
-//
+
+
 btnWeather.addEventListener('click', () => {
     if (btnWeather.classList.contains('active-btn')) return;
 
     btnWeather.classList.toggle('active-btn');
 
-        document.querySelector('.main-bottom').style.height = '0';
-        document.querySelector('.main-top').style.height = '100%';
-        const timeOut = setTimeout(() => {
-            document.querySelector('.main-bottom').style.height = '40%';
-            document.querySelector('.main-top').style.height = '60%';
+        // const timeOut = setTimeout(() => {
+        //     document.querySelector('.main-bottom').style.height = '40%';
+        //     document.querySelector('.main-top').style.height = '60%';
+        // }, 500);
+        
             document.querySelector('.weather-data-container').classList.remove('hide');
-        }, 500);
-
     document.querySelector('.news-data-wrapper').classList.add('hide');
     document.querySelector('.photos-data-wrapper').classList.add('hide');
 
@@ -181,6 +157,9 @@ document.addEventListener('click', (e) =>{
 
     if(target){
     target.parentElement.textContent = '';
+    document.querySelector('.main-top').classList.toggle('hide');
+    document.querySelector('.main-bottom').classList.toggle('hide');
+    document.querySelector('.main-bottom').classList.remove('bottom-opened');
     input.style.display = 'block';
     }
 });
@@ -190,6 +169,17 @@ document.addEventListener('click', (e) =>{
 function getDataWeather(dataWeather) {
     document.querySelector('.main-weather').textContent = dataWeather.weather[0].main;
     document.querySelector('.main-temp').textContent = getFloorValueOfWeather(dataWeather.main.temp);
+    const sunriseMil = dataWeather.sys.sunrise;
+    let sunriseMin = Math.floor((sunriseMil / 60) % 60);
+    if (sunriseMin < 10) {sunriseMin = `0${sunriseMin}`}
+    let sunriseHour = Math.floor((sunriseMil / 3600) % 24);
+    if (sunriseHour < 10) {sunriseHour = `0${sunriseHour}`}
+    const sunsetMil = dataWeather.sys.sunset;
+    let sunsetMin = Math.floor((sunsetMil / 60) % 60);
+    if (sunsetMin < 10) {sunsetMin = `0${sunsetMin}`}
+    let sunsetHour = Math.floor((sunsetMil / 3600) % 24);
+    if (sunsetHour < 10) {sunsetHour = `0${sunsetHour}`}
+
 
     document.querySelector('.weather-data-container').innerHTML = `
         <div class="temp-feels-like">
@@ -215,12 +205,18 @@ function getDataWeather(dataWeather) {
                 <span class="wind-value">${(dataWeather.wind.speed).toFixed(1)} mph</span>
             </div>
         </div>
+        <div class="sunrise">
+            <span class="weather-data-text">Sunrise</span>
+            <span class="sunrise-value">${sunriseHour}:${sunriseMin}</span>
+        </div>
+        <div class="sunset">
+            <span class="weather-data-text">Sunset</span>
+            <span class="sunset-value">${sunsetHour}:${sunsetMin}</span>
+        </div>
     `;
 
     document.querySelector('.fa-arrow-up').style.setProperty('transform', `rotate(${dataWeather.wind.deg}deg)`);
 }
-
-// for news data
 
 function getDataNews(dataNews) {
     for (let i = 0; i <= 20; i++) {
@@ -253,8 +249,6 @@ function getDataNews(dataNews) {
     }
 }
 
-//for photos data
-
 function getDataPhotos(dataPhotos) {
     for (let i = 0; i <= 27; i++) {
         const div = document.createElement('div');
@@ -272,19 +266,19 @@ function getDataPhotos(dataPhotos) {
 
 function elemsToHide(elem) {
     if (elem == 'mainHidden') {
-        document.querySelector('.main-weather').style.visibility = 'hidden';
-        document.querySelector('.main-temp').style.visibility = 'hidden';
-        document.querySelector('#search').style.visibility = 'hidden';
-        document.querySelector('.city').style.visibility = 'hidden';
+        document.querySelector('.main-top-container').style.display = 'none';
+        // document.querySelector('.main-weather').style.visibility = 'hidden';
+        // document.querySelector('.main-temp').style.visibility = 'hidden';
+        // document.querySelector('#search').style.visibility = 'hidden';
+        // document.querySelector('.city').style.visibility = 'hidden';
     } else if (elem == 'mainVisible') {
-        document.querySelector('.main-weather').style.visibility = 'visible';
-        document.querySelector('.main-temp').style.visibility = 'visible';
-        document.querySelector('#search').style.visibility = 'visible';
-        document.querySelector('.city').style.visibility = 'visible';
+        document.querySelector('.main-top-container').style.display = 'flex';
+        // document.querySelector('.main-weather').style.visibility = 'visible';
+        // document.querySelector('.main-temp').style.visibility = 'visible';
+        // document.querySelector('#search').style.visibility = 'visible';
+        // document.querySelector('.city').style.visibility = 'visible';
     }
 }
-
-// 
 
 const swipeYLimit = 220;
 
@@ -296,7 +290,6 @@ document.querySelector('.main-bottom').addEventListener('touchstart', e => {
         startY = touch.clientY;
         document.querySelector('.main-bottom').addEventListener('touchmove', moveTouch);
         document.querySelector('.main-bottom').addEventListener('touchend', endTouch);
-        console.log(e);
     }
 });
 
@@ -312,8 +305,23 @@ const moveTouch = e => {
 
 const endTouch = e => {
     const finishingTouch = e.changedTouches[0].clientY;
-    if (startY < finishingTouch - swipeYLimit) {
+    if (startY < finishingTouch - swipeYLimit) {  
+        document.querySelector('.main-top').classList.remove('data-container-unactive');
+        document.querySelector('.main-bottom').style.cssText = '';
         document.querySelector('.main-bottom').classList.toggle('hide');
+        document.querySelector('.weather-data-container').classList.remove('hide');
+        btnWeather.classList.toggle('active-btn');
+
+    document.querySelector('.news-data-wrapper').classList.add('hide');
+    document.querySelector('.photos-data-wrapper').classList.add('hide');
+
+
+    elemsToHide('mainVisible');
+
+    btnNews.classList.remove('active-btn');
+    btnPhotos.classList.remove('active-btn');
+ 
+    document.querySelector('.main-bottom').classList.toggle('hide');
     } else if (startY > finishingTouch + swipeYLimit){
         progressY = 0; 
     }
