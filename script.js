@@ -21,12 +21,22 @@ const city = document.querySelector('.city');
 // ________________________________________________________________________________________________________
 
 async function getResponses(location) {
-
     document.querySelector('.loader').style.display = 'block';
 
     document.querySelector('.weather-data-container').classList.add('hide');
     document.querySelector('.news-data-wrapper').classList.add('hide');
     document.querySelector('.photos-data-wrapper').classList.add('hide');
+
+    try {
+        const respWeather = await fetch(urlWeather1(location));
+        const respNews = await fetch(urlNews2(location));
+        const respPhotos = await fetch(urlPhotos3(location));
+        if (!respWeather.ok || !respNews.ok || !respPhotos.ok) {
+            throw new Error('Error');
+        }
+    } catch (error) {
+        console.log(error);
+    }
 
     const respWeather = await fetch(urlWeather1(location));
     const respNews = await fetch(urlNews2(location));
@@ -46,12 +56,9 @@ async function getResponses(location) {
 
     document.querySelector('.loader').style.display = 'none';
 
-    // console.log(dataWeather, dataNews, dataPhotos);
-
     getDataWeather(dataWeather);
     getDataPhotos(dataPhotos);
     getDataNews(dataNews);
-
 }
 
 // ________________________________________________________________________________________________________________________
@@ -74,7 +81,11 @@ function selectCity() {
 
             document.querySelector('.photos-data-container').innerHTML = '';
             document.querySelector('.news-data-container').innerHTML = '';
+            if (document.querySelector('.weather-icon')) {
+                document.querySelector('.weather-icon').remove();
+            }
             getResponses(`${inputValue}`);
+       
             input.value = '';
             input.style.display = 'none';
             input.blur();
@@ -169,6 +180,13 @@ document.addEventListener('click', (e) =>{
 function getDataWeather(dataWeather) {
     document.querySelector('.main-weather').textContent = dataWeather.weather[0].main;
     document.querySelector('.main-temp').textContent = getFloorValueOfWeather(dataWeather.main.temp);
+
+    const img = document.createElement('img');
+    img.setAttribute('src', `http://openweathermap.org/img/wn/${dataWeather.weather[0].icon}.png`);
+    img.setAttribute('alt', `weather icon`);
+    img.classList.add('weather-icon');
+    document.querySelector('.main-weather').after(img);
+
     const sunriseMil = dataWeather.sys.sunrise;
     let sunriseMin = Math.floor((sunriseMil / 60) % 60);
     if (sunriseMin < 10) {sunriseMin = `0${sunriseMin}`}
@@ -255,6 +273,7 @@ function getDataPhotos(dataPhotos) {
         const img = document.createElement('img');
     
         div.classList.add('image-content');
+        img.classList.add('image');
     
         img.setAttribute('src', `${dataPhotos.results[i].urls.small}`);
         img.setAttribute('alt', `${dataPhotos.results[i].alt_description}`);
@@ -267,44 +286,50 @@ function getDataPhotos(dataPhotos) {
 function elemsToHide(elem) {
     if (elem == 'mainHidden') {
         document.querySelector('.main-top-container').style.display = 'none';
-        // document.querySelector('.main-weather').style.visibility = 'hidden';
-        // document.querySelector('.main-temp').style.visibility = 'hidden';
-        // document.querySelector('#search').style.visibility = 'hidden';
-        // document.querySelector('.city').style.visibility = 'hidden';
     } else if (elem == 'mainVisible') {
         document.querySelector('.main-top-container').style.display = 'flex';
-        // document.querySelector('.main-weather').style.visibility = 'visible';
-        // document.querySelector('.main-temp').style.visibility = 'visible';
-        // document.querySelector('#search').style.visibility = 'visible';
-        // document.querySelector('.city').style.visibility = 'visible';
     }
 }
 
 const swipeYLimit = 220;
+let startY = null;
+let touchTime = null;
 
 document.querySelector('.main-bottom').addEventListener('touchstart', e => {
-    if (e.target == document.querySelector('a')) {return;}
     const { touches } = e;
+     touchTime = new Date().getTime();
+    console.log(touchTime);
+    // const diff = new Date() - touchTime;
+    // console.log(diff);
+    
     if (touches && touches.length === 1) {
         const touch = touches[0];
-        startY = touch.clientY;
+         startY = touch.clientY;
+         console.log(startY);
         document.querySelector('.main-bottom').addEventListener('touchmove', moveTouch);
         document.querySelector('.main-bottom').addEventListener('touchend', endTouch);
     }
 });
 
 const moveTouch = e => {
+   
     const progressY = startY - e.touches[0].clientY;
+    //
+    console.log(touchTime);
+    console.log(startY);
+    //
     const translation = progressY > 0 ? -Math.abs(progressY) : Math.abs(progressY);
+    console.log(translation);
     if (translation < 0) {
         return;
-    } else {
+    } else if (translation > 0 && translation < swipeYLimit) {
         document.querySelector('.main-bottom').style.setProperty('transform', `translateY(${translation}px)`);
     }
 };
 
-const endTouch = e => {
+const endTouch = (e) => {
     const finishingTouch = e.changedTouches[0].clientY;
+    console.log(finishingTouch);
     if (startY < finishingTouch - swipeYLimit) {  
         document.querySelector('.main-top').classList.remove('data-container-unactive');
         document.querySelector('.main-bottom').style.cssText = '';
@@ -314,7 +339,6 @@ const endTouch = e => {
 
     document.querySelector('.news-data-wrapper').classList.add('hide');
     document.querySelector('.photos-data-wrapper').classList.add('hide');
-
 
     elemsToHide('mainVisible');
 
@@ -332,3 +356,21 @@ const endTouch = e => {
 document.documentElement.addEventListener('click', e  => {
     console.log(e);
 });
+
+document.querySelector('.photos-data-container').addEventListener('click', e => {
+    const target = e.target;
+
+    function getRegularImage(dataPhotos) {
+        console.log(dataPhotos);
+    }
+
+    if (target.classList.contains('image')) {
+        document.querySelector('.full-image-box').style.display = 'flex';
+        document.querySelector('.full-image').src = target.src.replace('400', '1080');
+        document.querySelector('.full-image').alt = target.alt;
+    }
+});
+
+function closeFullImage() {
+    document.querySelector('.full-image-box').style.display = 'none';
+}

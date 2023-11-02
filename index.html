@@ -9,6 +9,10 @@
     <link rel="shortcut icon" href="#" />
   </head>
   <body>
+    <div class="full-image-box">
+      <img class="full-image" src="" alt="">
+      <span onclick="closeFullImage()">X</span>
+    </div>
     <main id="main">
       <input
           type="text"
@@ -19,7 +23,9 @@
         />
       <div class="main-top hide">
         <div class="main-top-container">
-          <h3 class="main-weather"></h3>
+          <div class="weather">
+            <h3 class="main-weather"></h3>
+          </div>
           <p class="main-temp"></p>
           <h2 class="city"></h2>
         </div>
