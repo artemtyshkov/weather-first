@@ -10,8 +10,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
 const keyWeather1 = '6e07f1b9464466e8886c4a31d35c862a';
 const urlWeather1 = (enteredLocation) => `https://api.openweathermap.org/data/2.5/weather?q=${enteredLocation}&appid=${keyWeather1}`;
-const keyNews2 = '4c6ea768d9074c66b72d7a6b270a1ac0';
-const urlNews2 = (enteredLocation) => `https://newsapi.org/v2/everything?q=${enteredLocation}&sortBy=popularity&apiKey=${keyNews2}`;
+const keyNews2 = '39ee0dc0254b92408ad7d62751ad74cc';
+const urlNews2 = (enteredLocation) => `https://gnews.io/api/v4/search?q=${enteredLocation}&apikey=${keyNews2}`;
 const keyPhotos3 = 'nTCkY5XRA7Sqw-zm7gU74m90b3kbqy8cOVEcZowcZxg';
 const urlPhotos3 = (enteredLocation) => `https://api.unsplash.com/search/photos?per_page=50&query=${enteredLocation}&client_id=${keyPhotos3}`
 
@@ -238,48 +238,56 @@ function getDataWeather(dataWeather) {
 
 function getDataNews(dataNews) {
     for (let i = 0; i <= 20; i++) {
-        const div = document.createElement('div');
-        const img = document.createElement('img');
-        const p = document.createElement('p');
+        if (dataNews.articles[i]) {
+            const div = document.createElement('div');
+            const img = document.createElement('img');
+            const p = document.createElement('p');
+    
+            div.classList.add('news', `news-${i}`);
+    
+            img.classList.add('news-image');
+            // console.log(dataNews.articles[i].image);
+            img.setAttribute('src', `${dataNews.articles[i].image}`);
+            // img.setAttribute('alt', `${dataNews.articles[i].title}`);
+    
+            p.classList.add('news-title');
+    
+            const textNodeP = dataNews.articles[i].title;
+            if (textNodeP.split(' ').lenght > 12) {
+                p.textContent = `${dataNews.articles[i].title}`;
+            } else {
+                p.textContent = `${textNodeP.split(' ').slice(0, 12).join(' ')}...`;
+            };
+    
+            document.querySelector('.news-data-container').appendChild(div);
+            div.appendChild(img);
+            div.appendChild(p);
+            
+            div.addEventListener('click', () => {
+                // window.location.href = `${dataNews.articles[i].url}`;
+                window.open(`${dataNews.articles[i].url}`, '_blank'); ;
+            });
+        }
 
-        div.classList.add('news', `news-${i}`);
-
-        img.classList.add('news-image');
-        img.setAttribute('src', `${dataNews.articles[i].urlToImage}`);
-        img.setAttribute('alt', `${dataNews.articles[i].title}`);
-
-        p.classList.add('news-title');
-
-        const textNodeP = dataNews.articles[i].description;
-        if (textNodeP.split(' ').lenght > 12) {
-            p.textContent = `${dataNews.articles[i].description}`
-        } else {
-            p.textContent = `${textNodeP.split(' ').slice(0, 12).join(' ')}...`
-        };
-
-        document.querySelector('.news-data-container').appendChild(div);
-        div.appendChild(img);
-        div.appendChild(p);
-        div.addEventListener('click', () => {
-            // window.location.href = `${dataNews.articles[i].url}`;
-            window.open(`${dataNews.articles[i].url}`, '_blank'); ;
-        }, false);
     }
 }
 
 function getDataPhotos(dataPhotos) {
     for (let i = 0; i <= 27; i++) {
-        const div = document.createElement('div');
-        const img = document.createElement('img');
-    
-        div.classList.add('image-content');
-        img.classList.add('image');
-    
-        img.setAttribute('src', `${dataPhotos.results[i].urls.small}`);
-        img.setAttribute('alt', `${dataPhotos.results[i].alt_description}`);
+        
+        if (dataPhotos.results[i]) {
+            const div = document.createElement('div');
+            const img = document.createElement('img');
+        
+            div.classList.add('image-content');
+            img.classList.add('image');
+            img.setAttribute('src', `${dataPhotos.results[i].urls.small}`);
+            img.setAttribute('alt', `${dataPhotos.results[i].alt_description}`);
+            
+            document.querySelector('.photos-data-container').appendChild(div);
+            div.appendChild(img);
+        }
 
-        document.querySelector('.photos-data-container').appendChild(div);
-        div.appendChild(img);
     }
 }
 
@@ -359,10 +367,6 @@ document.documentElement.addEventListener('click', e  => {
 
 document.querySelector('.photos-data-container').addEventListener('click', e => {
     const target = e.target;
-
-    function getRegularImage(dataPhotos) {
-        console.log(dataPhotos);
-    }
 
     if (target.classList.contains('image')) {
         document.querySelector('.full-image-box').style.display = 'flex';
