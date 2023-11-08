@@ -305,27 +305,18 @@ let touchTime = null;
 
 document.querySelector('.main-bottom').addEventListener('touchstart', e => {
     const { touches } = e;
-     touchTime = new Date().getTime();
-    console.log(touchTime);
-    // const diff = new Date() - touchTime;
-    // console.log(diff);
     
     if (touches && touches.length === 1) {
         const touch = touches[0];
-         startY = touch.clientY;
-         console.log(startY);
+        startY = touch.clientY;
         document.querySelector('.main-bottom').addEventListener('touchmove', moveTouch);
         document.querySelector('.main-bottom').addEventListener('touchend', endTouch);
     }
 });
 
-const moveTouch = e => {
-   
+const moveTouch = e => { 
     const progressY = startY - e.touches[0].clientY;
-    //
-    console.log(touchTime);
-    console.log(startY);
-    //
+
     const translation = progressY > 0 ? -Math.abs(progressY) : Math.abs(progressY);
     console.log(translation);
     if (translation < 0) {
