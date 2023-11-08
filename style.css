@@ -290,6 +290,11 @@ body {
 
 .data-container-active {
     height: 80%;
+    transition: height 400ms ease;
+    -webkit-transition: height 400ms ease;
+    -moz-transition: height 400ms ease;
+    -ms-transition: height 400ms ease;
+    -o-transition: height 400ms ease;
 }
 
 .data-container-unactive {
