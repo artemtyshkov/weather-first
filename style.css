@@ -37,11 +37,11 @@ body {
     background-color: #fff;
     object-position: center;
     background-size: cover;
-    transition: all 1s ease;
+    /* transition: all 1s ease;
     -webkit-transition: all 1s ease;
     -moz-transition: all 1s ease;
     -ms-transition: all 1s ease;
-    -o-transition: all 1s ease;
+    -o-transition: all 1s ease; */
 }
 
 .main-top {
@@ -75,12 +75,19 @@ body {
     background-color: #fff;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    transition: height 500ms ease;
+    transition: all 500ms ease;
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -ms-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transform-origin: bottom center;
     z-index: 10;
-    -webkit-transition: height 500ms ease;
-    -moz-transition: height 500ms ease;
-    -ms-transition: height 500ms ease;
-    -o-transition: height 500ms ease;
+    /*transform: scaleY(0);
+    -webkit-transform: scaleY(0);
+    -moz-transform: scaleY(0);
+    -ms-transform: scaleY(0);
+    -o-transform: scaleY(0);
+    */
 }
 
 .bottom-opened {
@@ -231,11 +238,12 @@ body {
     gap: 10px;
     font-size: 0.8rem;
     cursor: pointer;
+    max-height: 80px;
 }
 
 .news-data-container .news:hover {
-    /*transition: all 100ms ease;
-    */background-color: #fcfcfc;
+    background-color: #fcfcfc;
+    overflow: hidden;
     transform: scale(1.025);
     -webkit-transform: scale(1.025);
     -moz-transform: scale(1.025);
@@ -243,8 +251,9 @@ body {
     -o-transform: scale(1.025);
 }
 
-.news-data-container .news img {
+.news-data-container .news .news-image {
     width: 60px;
+    background-size: cover;
 }
 
 .photos-data-wrapper {
@@ -276,6 +285,7 @@ body {
 }
 
 .image-content:hover {
+    overflow: hidden;
     transition: transform 200ms ease;
     transform: scale(1.025);
     -webkit-transform: scale(1.025);
@@ -290,11 +300,6 @@ body {
 
 .data-container-active {
     height: 80%;
-    transition: height 400ms ease;
-    -webkit-transition: height 400ms ease;
-    -moz-transition: height 400ms ease;
-    -ms-transition: height 400ms ease;
-    -o-transition: height 400ms ease;
 }
 
 .data-container-unactive {
@@ -313,6 +318,7 @@ body {
     inset: 0;
     top: 50px;
     display: none;
+    z-index: 100;
 }
 
 @keyframes spinner {
@@ -366,7 +372,7 @@ body {
     right: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.9);
     z-index: 100;
     display: block;
     display: none;
