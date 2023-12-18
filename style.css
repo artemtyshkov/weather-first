@@ -15,10 +15,8 @@ body {
     padding: 0;
     margin: 0;
     display: grid;
-    padding: 0;
-    margin: 0;
     place-items: center;
-    height: 100%;
+    height: 100dvh;
     width: 100%;
     font-family: 'Poppins', sans-serif;
     background-color: rgb(221, 197, 219);
@@ -37,11 +35,6 @@ body {
     background-color: #fff;
     object-position: center;
     background-size: cover;
-    /* transition: all 1s ease;
-    -webkit-transition: all 1s ease;
-    -moz-transition: all 1s ease;
-    -ms-transition: all 1s ease;
-    -o-transition: all 1s ease; */
 }
 
 .main-top {
@@ -50,11 +43,11 @@ body {
     top: 0;
     right: 0;
     height: 60%;
-    transition: height 500ms ease;
-    -webkit-transition: height 500ms ease;
-    -moz-transition: height 500ms ease;
-    -ms-transition: height 500ms ease;
-    -o-transition: height 500ms ease;
+    transition: all 500ms ease;
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -ms-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
 }
 
 .main-top-container {
@@ -70,32 +63,26 @@ body {
 }
 
 .main-bottom {
-    text-align: center;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
     height: 40%;
-    background-color: #fff;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    transform-origin: bottom center;
     transition: all 500ms ease;
     -webkit-transition: all 500ms ease;
     -moz-transition: all 500ms ease;
     -ms-transition: all 500ms ease;
     -o-transition: all 500ms ease;
-    transform-origin: bottom center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    text-align: center;
+    background-color: #fff;
     z-index: 10;
-    /*transform: scaleY(0);
-    -webkit-transform: scaleY(0);
-    -moz-transform: scaleY(0);
-    -ms-transform: scaleY(0);
-    -o-transform: scaleY(0);
-    */
 }
 
-.bottom-opened {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    left: 0;
-}
+/* .bottom-opened {
+} */
 
 .main-top-container h2 {
     font-size: 1.2rem;
@@ -164,7 +151,10 @@ body {
     position: relative;
     margin: 10px 0;
     height: calc(100% - 69px);
-    overflow-y: scroll;
+    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
 }
 
 .weather-data-container {
@@ -220,7 +210,8 @@ body {
 
 .news-data-container {
     display: grid;
-    grid-template-rows: repeat(3, 1fr);
+    /* grid-template-rows: repeat(3, 1fr); */
+    grid-auto-rows: 70px;
     text-align: left;
     align-items: center;
     position: absolute;
@@ -229,7 +220,7 @@ body {
     right: 0;
     width: 100%;
     padding: 0 25px;
-    overflow: auto;
+    /* overflow: auto; */
 }
 
 .news-data-container .news {
@@ -286,12 +277,12 @@ body {
 
 .image-content:hover {
     overflow: hidden;
-    transition: transform 200ms ease;
     transform: scale(1.025);
     -webkit-transform: scale(1.025);
     -moz-transform: scale(1.025);
     -ms-transform: scale(1.025);
     -o-transform: scale(1.025);
+    transition: transform 200ms ease;
     -webkit-transition: transform 200ms ease;
     -moz-transition: transform 200ms ease;
     -ms-transition: transform 200ms ease;
@@ -299,11 +290,11 @@ body {
 }
 
 .data-container-active {
-    height: 80%;
+    height: 90%;
 }
 
 .data-container-unactive {
-    height: 20%;
+    height: 10%;
 }
 
 .loader {
@@ -392,4 +383,12 @@ body {
     color:#868686;
     font-size: 30px;
     cursor: pointer;
+}
+
+.news news-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #000;
+    margin: 0;
+    padding: 0;
 }
