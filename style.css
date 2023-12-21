@@ -29,8 +29,7 @@ body {
     justify-content: center;
     align-content: center;
     width: 100%;
-    height: 100%;
-    min-height: -webkit-fill-available;
+    height: 100dvh;
     overflow: hidden;
     background-color: #fff;
     object-position: center;
@@ -43,11 +42,11 @@ body {
     top: 0;
     right: 0;
     height: 60%;
-    transition: all 500ms ease;
-    -webkit-transition: all 500ms ease;
-    -moz-transition: all 500ms ease;
-    -ms-transition: all 500ms ease;
-    -o-transition: all 500ms ease;
+    transition: height 500ms ease;
+    -webkit-transition: height 500ms ease;
+    -moz-transition: height 500ms ease;
+    -ms-transition: height 500ms ease;
+    -o-transition: height 500ms ease;
 }
 
 .main-top-container {
@@ -56,8 +55,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100%;
-    /* filter */
-    object-position: center;
+    /*filter*/object-position: center;
     background-size: 100% 100% ;
     background-repeat: no-repeat;
 }
@@ -69,19 +67,36 @@ body {
     left: 0;
     height: 40%;
     transform-origin: bottom center;
-    transition: all 500ms ease;
-    -webkit-transition: all 500ms ease;
-    -moz-transition: all 500ms ease;
-    -ms-transition: all 500ms ease;
-    -o-transition: all 500ms ease;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     text-align: center;
     background-color: #fff;
     z-index: 10;
+    transition: height 500ms ease;
+    -webkit-transition: height 500ms ease;
+    -moz-transition: height 500ms ease;
+    -ms-transition: height 500ms ease;
+    -o-transition: height 500ms ease;
 }
 
+/* .main-bottom::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(255, 0, 0, 0) 0%, #ff3232 100%);
+    transition: height 500ms ease;
+    z-index: 1;
+    -webkit-transition: hegiht 500ms ease;
+    -moz-transition: hegiht 500ms ease;
+    -ms-transition: hegiht 500ms ease;
+    -o-transition: hegiht 500ms ease;
+} */
+
 /* .bottom-opened {
+
 } */
 
 .main-top-container h2 {
@@ -161,6 +176,7 @@ body {
     display: grid;
     grid-template-rows: repeat(7, 45px);
     background-color: #fff;
+    overflow: auto;
 }
 
 .weather-data-container div {
@@ -205,7 +221,7 @@ body {
     /* top: 3rem; */
     height: 87%;
     width: 100%;
-    overflow: auto;
+    /* overflow: auto; */
 }
 
 .news-data-container {

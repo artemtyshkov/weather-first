@@ -114,7 +114,7 @@ function selectCity() {
             const inputValue = input.value.trim().charAt(0).toUpperCase() + input.value.trim().slice(1);
             input.value = inputValue;
             city.innerHTML = `${input.value}<i class="fa-solid fa-xmark"></i>`;
-            document.querySelector('.main-bottom').classList.add('bottom-opened');
+            // document.querySelector('.main-bottom').classList.add('bottom-opened');
             document.querySelector('.main-top').classList.remove('hide');
             document.querySelector('.main-bottom').classList.remove('hide');
             document.querySelector('#search').style.cssText = '';
@@ -156,6 +156,7 @@ btnWeather.addEventListener('click', () => {
 
     btnNews.classList.remove('active-btn');
     btnPhotos.classList.remove('active-btn');
+    // document.querySelector('.main-bottom').style.transition = '';
 });
 
 btnNews.addEventListener('click', () => {
@@ -179,10 +180,10 @@ btnNews.addEventListener('click', () => {
 btnPhotos.addEventListener('click', () => {
     if (btnPhotos.classList.contains('active-btn')) return;
         
+    btnPhotos.classList.toggle('active-btn');
     document.querySelector('.main-bottom').style.height = '';
     document.querySelector('.main-top').style.height = '';
 
-    btnPhotos.classList.toggle('active-btn');
     document.querySelector('.weather-data-container').classList.add('hide');
     document.querySelector('.news-data-wrapper').classList.add('hide');
     document.querySelector('.photos-data-wrapper').classList.remove('hide');
@@ -206,12 +207,11 @@ document.addEventListener('click', (e) =>{
     target.parentElement.textContent = '';
     document.querySelector('.main-top').classList.toggle('hide');
     document.querySelector('.main-bottom').classList.toggle('hide');
-    document.querySelector('.main-bottom').classList.remove('bottom-opened');
+    // document.querySelector('.main-bottom').classList.remove('bottom-opened');
+    document.querySelector('.main-bottom').style.transform = '';
     input.style.display = 'block';
     }
 });
-
-// for weather data
 
 function getDataWeather(dataWeather) {
     document.querySelector('.main-weather').textContent = dataWeather.weather[0].main;
@@ -350,10 +350,10 @@ function closeFullImage() {
     document.querySelector('.full-image-box').style.display = 'none';
 }
 
-let startY = 0;
-let translation = 0;
+let startY;
+let translation;
 
-document.querySelector('.main-bottom').addEventListener('touchstart', (e) => {
+document.querySelector('.tabs').addEventListener('touchstart', (e) => {
     const { touches } = e;  
 
     if (touches && touches.length === 1) {
@@ -362,22 +362,48 @@ document.querySelector('.main-bottom').addEventListener('touchstart', (e) => {
     }
 });
 
-document.querySelector('.main-bottom').addEventListener('touchmove', (e) => {
-  const touchY = e.touches[0].clientY;
+document.querySelector('.tabs').addEventListener('touchmove', (e) => {
+    const touchY = e.touches[0].clientY;
     const deltaY = startY - touchY;
     translation = deltaY > 0 ? -Math.abs(deltaY) : Math.abs(deltaY);
 
     if (translation > 0) {
-        document.querySelector('.main-bottom').style.transition = 'none';
+       document.querySelector('.main-bottom').style.transition = 'none';
        document.querySelector('.main-bottom').style.transform = `translateY(${translation}px)`;
     }
 });
 
-document.querySelector('.main-bottom').addEventListener('touchend', () => {
+document.querySelector('.tabs').addEventListener('touchend', (e) => {
     if (translation <= 220) {
-        document.querySelector('.main-bottom').style.transform = `translateY(0px)`;
-    } else {
-    document.querySelector('.main-bottom').style.transition = 'transform 200ms ease';
-    document.querySelector('.main-bottom').style.transform = `translateY(${document.querySelector('.main-bottom').clientHeight}px)`;
+        document.querySelector('.main-bottom').style.transition = 'transform 500ms ease';
+        document.querySelector('.main-bottom').style.transform = '';
+    } else if (translation > 220 || e.target.classList.contains('option-weather')) {
+        document.querySelector('.main-bottom').style.transition = 'transform 500ms ease';
+        document.querySelector('.main-bottom').style.transform = `translateY(${document.querySelector('.main-bottom').clientHeight}px)`;
+        elemsToHide('mainVisible');
+        document.querySelector('.main-top').classList.remove('data-container-unactive');
+        document.querySelector('.main-bottom').classList.remove('data-container-active');
+    //     document.querySelector('.main-bottom').style.transform = 'none';
+        document.querySelector('.weather-data-container').classList.remove('hide');
+        document.querySelector('.news-data-wrapper').classList.add('hide');
+        document.querySelector('.photos-data-wrapper').classList.add('hide');
+
+        document.querySelector('.option-weather').classList.add('active-btn');
+        document.querySelector('.option-news').classList.remove('active-btn');
+        document.querySelector('.option-photos').classList.remove('active-btn');
+        // document.querySelector('.main-bottom').removeAttribute('style');
     }
+    function handleTransitionEnd() {
+        // Remove the transition property once the transition is complete
+        document.querySelector('.main-bottom').style.transition = '';
+        document.querySelector('.main-bottom').style.transform = '';
+        
+        // Remove the event listener to avoid memory leaks
+        document.querySelector('.main-bottom').removeEventListener('transitionend', handleTransitionEnd);
+        document.querySelector('.main-bottom').removeEventListener('webkitTransitionEnd', handleTransitionEnd);
+      }
+      
+      // Add event listener for transitionend
+      document.querySelector('.main-bottom').addEventListener('transitionend', handleTransitionEnd);
+      document.querySelector('.main-bottom').addEventListener('webkitTransitionEnd', handleTransitionEnd);
 });
