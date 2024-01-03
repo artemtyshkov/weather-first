@@ -1,0 +1,12 @@
+@media (min-width: 768px) {
+    #main {
+        max-width: 400px;
+    }
+}
+
+@media (min-width: 1024px) and (min-height: 700px) {
+    #main {
+        min-height: 500px;
+        max-height: 750px;
+    }
+}
