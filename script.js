@@ -151,7 +151,7 @@ btnWeather.addEventListener('click', () => {
     document.querySelector('.photos-data-wrapper').classList.add('hide');
 
     document.querySelector('.main-bottom').classList.remove('data-container-active');
-    document.querySelector('.main-top').classList.remove('data-container-unactive');
+    // document.querySelector('.main-top').classList.remove('data-container-unactive');
     elemsToHide('mainVisible');
 
     btnNews.classList.remove('active-btn');
@@ -169,7 +169,7 @@ btnNews.addEventListener('click', () => {
     document.querySelector('.news-data-wrapper').classList.remove('hide');
     document.querySelector('.photos-data-wrapper').classList.add('hide');
     document.querySelector('.main-bottom').classList.add('data-container-active');
-    document.querySelector('.main-top').classList.add('data-container-unactive');
+    // document.querySelector('.main-top').classList.add('data-container-unactive');
             
     elemsToHide('mainHidden');
     
@@ -188,7 +188,7 @@ btnPhotos.addEventListener('click', () => {
     document.querySelector('.news-data-wrapper').classList.add('hide');
     document.querySelector('.photos-data-wrapper').classList.remove('hide');
     document.querySelector('.main-bottom').classList.add('data-container-active');
-    document.querySelector('.main-top').classList.add('data-container-unactive');
+    // document.querySelector('.main-top').classList.add('data-container-unactive');
 
     function mainData() {
         document.querySelector('.main-temp').classList.add('secondary-temp');
@@ -367,10 +367,11 @@ document.querySelector('.tabs').addEventListener('touchmove', (e) => {
     translation = deltaY > 0 ? -Math.abs(deltaY) : Math.abs(deltaY);
 
     if (translation > 0) {
-       document.querySelector('.main-bottom').style.transition = '';
+       document.querySelector('.main-bottom').style.transition = 'transform 0ms ease';
        document.querySelector('.main-bottom').style.transform = `translateY(${translation}px)`;
     }
-});document.querySelector('.option-weather').classList.contains('active-btn')
+});
+// document.querySelector('.option-weather').classList.contains('active-btn')
 
 document.querySelector('.tabs').addEventListener('touchend', (e) => {
     if (translation <= 220) {
@@ -381,15 +382,15 @@ document.querySelector('.tabs').addEventListener('touchend', (e) => {
         document.querySelector('.main-bottom').style.transition = 'transform 500ms ease';
         document.querySelector('.main-bottom').style.transform = `translateY(${document.querySelector('.main-bottom').clientHeight}px)`;
         elemsToHide('mainVisible');
-        document.querySelector('.main-top').classList.remove('data-container-unactive');
+        document.querySelector('.option-weather').classList.add('active-btn');
+        document.querySelector('.option-news').classList.remove('active-btn');
+        document.querySelector('.option-photos').classList.remove('active-btn');
+        // document.querySelector('.main-top').classList.remove('data-container-unactive');
         document.querySelector('.main-bottom').classList.remove('data-container-active');
         document.querySelector('.weather-data-container').classList.remove('hide');
         document.querySelector('.news-data-wrapper').classList.add('hide');
         document.querySelector('.photos-data-wrapper').classList.add('hide');
 
-        document.querySelector('.option-weather').classList.add('active-btn');
-        document.querySelector('.option-news').classList.remove('active-btn');
-        document.querySelector('.option-photos').classList.remove('active-btn');
     } else if (e.target.classList.contains('option-weather') && document.querySelector('.option-weather').classList.contains('active-btn')) {
         return;
     }
