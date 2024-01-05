@@ -33,7 +33,7 @@ async function getResponses(location) {
       fetch(url)
         .then(response => {
           if (response.ok) return response.json();
-          throw new Error('Network response was not ok.');
+        //   throw new Error('Network response was not ok.');
         })
         .then(responseBody => ({ index, value: responseBody }))
         .catch(error => ({ index, error: error.message }))
@@ -364,10 +364,12 @@ document.querySelector('.tabs').addEventListener('touchstart', (e) => {
 document.querySelector('.tabs').addEventListener('touchmove', (e) => {
     const touchY = e.touches[0].clientY;
     const deltaY = startY - touchY;
+    if (deltaY !== 0 && document.querySelector('.option-weather').classList.contains('active-btn')) return;
     translation = deltaY > 0 ? -Math.abs(deltaY) : Math.abs(deltaY);
 
     if (translation > 0) {
-       document.querySelector('.main-bottom').style.transition = 'transform 0ms ease';
+        // This is a reason
+    //    document.querySelector('.main-bottom').style.transition = 'transform 500ms ease';
        document.querySelector('.main-bottom').style.transform = `translateY(${translation}px)`;
     }
 });
@@ -375,12 +377,12 @@ document.querySelector('.tabs').addEventListener('touchmove', (e) => {
 
 document.querySelector('.tabs').addEventListener('touchend', (e) => {
     if (translation <= 220) {
-        document.querySelector('.main-bottom').style.transition = 'transform 500ms ease';
-        document.querySelector('.main-bottom').style.transform = '';
+        // document.querySelector('.main-bottom').style.transition = 'transform 500ms ease';
+        document.querySelector('.main-bottom').style.transform = 'translateY(0px)';
     } else if (translation > 220 || e.target.classList.contains('option-weather')) {
         if (document.querySelector('.option-weather').classList.contains('active-btn')) return;
-        document.querySelector('.main-bottom').style.transition = 'transform 500ms ease';
-        document.querySelector('.main-bottom').style.transform = `translateY(${document.querySelector('.main-bottom').clientHeight}px)`;
+        // document.querySelector('.main-bottom').style.transition = 'transform 500ms ease';
+        // document.querySelector('.main-bottom').style.transform = `translateY(${document.querySelector('.main-bottom').clientHeight}px)`;
         elemsToHide('mainVisible');
         document.querySelector('.option-weather').classList.add('active-btn');
         document.querySelector('.option-news').classList.remove('active-btn');
