@@ -20,6 +20,7 @@ body {
     font-family: 'Poppins', sans-serif;
     background-color: rgb(236, 213, 234);
     overflow: hidden;
+    position: relative;
 
     #main {
         position: relative;
@@ -346,6 +347,82 @@ body {
 
         }
 
+    }
+
+    .error {
+        width: 250px;
+        display: flex;
+        justify-content: center;
+        position: absolute;
+        bottom: 3%;
+        left: 50%;
+        margin-left: calc(250px / -2);
+        padding: 1rem 1.5rem;
+        background-color: #ff6868;
+        border:rgb(255, 128, 128) 1px solid;
+        transform: translateY(2rem);
+        border-radius: 0.25rem;
+        -webkit-border-radius: 0.25rem;
+        -moz-border-radius: 0.25rem;
+        -ms-border-radius: 0.25rem;
+        -o-border-radius: 0.25rem;
+        animation: fade-in 6s;
+        -webkit-animation: fade-in 6s;
+        -webkit-transform: translateY(2rem);
+        -moz-transform: translateY(2rem);
+        -ms-transform: translateY(2rem);
+        -o-transform: translateY(2rem);
+        opacity: 0;
+        pointer-events: none;
+        z-index: 10000;
+
+        .error__text {
+            font-size: 0.9rem;
+            color: #fff;
+            text-align: center;
+        }
+
+        .error__progress {
+            position: absolute;
+            inset: 0 0.625rem 0.375rem;
+            height: 0.25rem;
+            background-color: #ebebeb;
+            transform: scaleX(0);
+            -webkit-transform: scaleX(0);
+            -moz-transform: scaleX(0);
+            -ms-transform: scaleX(0);
+            -o-transform: scaleX(0);
+            transform-origin: left;
+            border-radius: 0.5rem;
+            -webkit-border-radius: 0.5rem;
+            -moz-border-radius: 0.5rem;
+            -ms-border-radius: 0.5rem;
+            -o-border-radius: 0.5rem;
+            animation: load 5s 0.5s linear forwards;
+            -webkit-animation: load 5s 0.5s linear forwards;
+
+            @keyframes fade-in {
+                5%, 90% {
+                    opacity: 1;
+                    transform: translateY(0);
+                    -webkit-transform: translateY(0);
+                    -moz-transform: translateY(0);
+                    -ms-transform: translateY(0);
+                    -o-transform: translateY(0);
+                }
+            }
+
+            @keyframes load {
+                100% {
+                    transform: scaleX(1);
+                    -webkit-transform: scaleX(1);
+                    -moz-transform: scaleX(1);
+                    -ms-transform: scaleX(1);
+                    -o-transform: scaleX(1);
+                }
+            }
+}
+        
     }
 
     .full-image-box {

@@ -33,7 +33,7 @@ async function getResponses(location) {
       fetch(url)
         .then(response => {
           if (response.ok) return response.json();
-        //   throw new Error('Network response was not ok.');
+          throw new Error('Network response was not ok.');
         })
         .then(responseBody => ({ index, value: responseBody }))
         .catch(error => ({ index, error: error.message }))
@@ -41,22 +41,35 @@ async function getResponses(location) {
 
     Promise.all(promises)
       .then(results => {
-        // Sort the results based on the original order
         results.sort((a, b) => a.index - b.index);
     
-        // Extract values from sorted results
         respData = results.map(result => result.value);
     
-        console.log('Responses in original order:', respData);
         getDataWeather(respData[0]);
         getDataNews(respData[1]);
         getDataPhotos(respData[2]);
         document.querySelector('.loader').style.display = 'none';
         
     })
-    .catch(error => {
-        console.error('Error during Promise.all:', error);
+    .catch(() => {
         document.querySelector('.loader').style.display = 'none';
+
+        const div = document.createElement('div');
+        div.classList.add('error');
+        const spanText = document.createElement('span');
+        const spanProgress = document.createElement('span');
+        div.classList.add('error');
+        spanText.classList.add('error__text');
+        spanText.textContent = `Something went wrong. Please, try again later!`;
+        spanProgress.classList.add('error__progress');
+        div.appendChild(spanText);
+        div.appendChild(spanProgress);
+        document.querySelector('#main').appendChild(div);
+        hideMainContainersAndShowInput();
+        setTimeout(() => {
+            document.querySelector('.error').remove();
+        }, 6000);
+
       });
 
     // try {
@@ -114,7 +127,6 @@ function selectCity() {
             const inputValue = input.value.trim().charAt(0).toUpperCase() + input.value.trim().slice(1);
             input.value = inputValue;
             city.innerHTML = `${input.value}<i class="fa-solid fa-xmark"></i>`;
-            // document.querySelector('.main-bottom').classList.add('bottom-opened');
             document.querySelector('.main-top').classList.remove('hide');
             document.querySelector('.main-bottom').classList.remove('hide');
             document.querySelector('#search').style.cssText = '';
@@ -204,11 +216,7 @@ document.addEventListener('click', (e) =>{
     const target = e.target.closest('.fa-xmark');
 
     if (target){
-        target.parentElement.textContent = '';
-        document.querySelector('.main-top').classList.toggle('hide');
-        document.querySelector('.main-bottom').classList.toggle('hide');
-        // document.querySelector('.main-bottom').style.transform = '';
-        input.style.display = 'block';
+        hideMainContainersAndShowInput();
     }
 });
 
@@ -281,7 +289,6 @@ function getDataNews(dataNews) {
             div.classList.add('news', `news-${i}`);
     
             img.classList.add('news-image');
-            // console.log(dataNews.articles[i].image);
             img.setAttribute('src', `${dataNews.articles[i].image}`);
             img.setAttribute('alt', `${dataNews.articles[i].title}`);
             img.setAttribute('loading', `lazy`);
@@ -368,12 +375,9 @@ document.querySelector('.tabs').addEventListener('touchmove', (e) => {
     translation = deltaY > 0 ? -Math.abs(deltaY) : Math.abs(deltaY);
 
     if (translation > 0) {
-        // This is a reason
-    //    document.querySelector('.main-bottom').style.transition = 'transform 500ms ease';
        document.querySelector('.main-bottom').style.transform = `translateY(${translation}px)`;
     }
 });
-// document.querySelector('.option-weather').classList.contains('active-btn')
 
 document.querySelector('.tabs').addEventListener('touchend', (e) => {
     if (translation <= 220) {
@@ -407,4 +411,11 @@ function handleTransitionEnd() {
     
     document.querySelector('.main-bottom').removeEventListener('transitionend', handleTransitionEnd);
     document.querySelector('.main-bottom').removeEventListener('webkitTransitionEnd', handleTransitionEnd);
+  }
+
+  function hideMainContainersAndShowInput() {
+    document.querySelector('#search').textContent = '';
+    document.querySelector('.main-top').classList.toggle('hide');
+    document.querySelector('.main-bottom').classList.toggle('hide');
+    input.style.display = 'block';
   }
