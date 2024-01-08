@@ -2,9 +2,9 @@ window.addEventListener('DOMContentLoaded', () => {
     input.focus();
     const currentTime = new Date();
     if(currentTime.getHours() > 6 && currentTime.getHours() < 17) {
-        document.getElementById('main').style.backgroundImage = 'url(Assets/images/afternoon.png)';
+        document.getElementById('main').style.backgroundImage = 'url(assets/images/afternoon.png)';
     } else {
-        document.getElementById('main').style.backgroundImage = 'url(Assets/images/night.png)';
+        document.getElementById('main').style.backgroundImage = 'url(assets/images/night.png)';
     }
 });
 
