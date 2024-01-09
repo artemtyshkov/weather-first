@@ -225,7 +225,7 @@ function getDataWeather(dataWeather) {
     document.querySelector('.main-temp').textContent = getFloorValueOfWeather(dataWeather.main.temp);
 
     const img = document.createElement('img');
-    img.setAttribute('src', `http://openweathermap.org/img/wn/${dataWeather.weather[0].icon}.png`);
+    img.setAttribute('src', `https://openweathermap.org/img/wn/${dataWeather.weather[0].icon}.png`);
     img.setAttribute('alt', `weather icon`);
     img.classList.add('weather-icon');
     document.querySelector('.main-weather').after(img);
@@ -307,7 +307,6 @@ function getDataNews(dataNews) {
             div.appendChild(p);
             
             div.addEventListener('click', () => {
-                // window.location.href = `${dataNews.articles[i].url}`;
                 window.open(`${dataNews.articles[i].url}`, '_blank'); ;
             });
         }
